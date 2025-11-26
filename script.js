@@ -145,24 +145,6 @@ prevBtn.addEventListener("click", () => {
 
 // Hiển thị ảnh đầu tiên
 showPhoto(0);
-
-// QR CODE - Tạo mã QR dẫn đến thiệp cưới
-window.addEventListener("load", () => {
-    const qrContainer = document.getElementById("qr-code");
-
-    if (qrContainer) {
-        const currentURL = window.location.href; //Lấy URL trang hiện tại
-
-        new QRCode(qrContainer, {
-            Text: currentURL,
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.correctLevel.H
-        });
-    }
-});
 // Chia sẻ thiệp cưới
 const shareURL = window.location.href;
 

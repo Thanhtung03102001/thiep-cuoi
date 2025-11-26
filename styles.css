@@ -451,6 +451,11 @@ body {
     align-items: center;
     justify-content: center;
 }
+.qr-image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-card);
+}
 /* Khu vực nút chia sẻ */
 .share-buttons {
     display: flex;
