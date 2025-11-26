@@ -452,7 +452,7 @@ body {
     justify-content: center;
 }
 .qr-image {
-    width: 60%;
+    width: 100%;
     height: auto;
     border-radius: var(--radius-card);
 }
