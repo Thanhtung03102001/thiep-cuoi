@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#090305">
+
+    <title>Happy Birthday ❤️</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="effects" aria-hidden="true"></canvas>
+
+    <!-- Nhạc nền -->
+    <audio id="backgroundMusic" loop preload="metadata">
+        <source src="./music/Beautiful In White.flac" type="audio/mp4">
+    </audio>
+
+    <button class="sound-button muted" id="soundButton" type="button" aria-label="Bật nhạc" aria-pressed="false">
+        ♪
+    </button>
+
+    <main>
+        <!-- Màn hình nhập mật mã -->
+        <section class="screen active lock-screen" id="lockScreen" aria-labelledby="lockTitle">
+            <div class="ambient ambient-one"></div>
+            <div class="ambient ambient-two"></div>
+
+            <div class="lock-card glass">
+                <div class="lock-icon" aria-hidden="true">
+                    <span></span>
+                </div>
+
+                <p class="eyebrow">
+                    A SECRET JUST FOR YOU
+                </p>
+
+                <h1 id="lockTitle">
+                    TÙNG ❤️️ DIỄM
+                </h1>
+
+                <p class="muted">
+                    Nhập mật mã để mở ra điều bí mật
+                </p>
+
+                <div class="pin-dots" id="pinDots" aria-label="Đã nhập 0 trên 4 số">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </div>
+
+                <p class="error-message" id="errorMessage" role="alert">
+                    Mật mã chưa đúng, thử lại nhé
+                </p>
+
+                <div class="keypad" aria-label="Bàn phím số">
+                    <button type="button" data-key="1">1</button>
+                    <button type="button" data-key="2">2</button>
+                    <button type="button" data-key="3">3</button>
+
+                    <button type="button" data-key="4">4</button>
+                    <button type="button" data-key="5">5</button>
+                    <button type="button" data-key="6">6</button>
+
+                    <button type="button" data-key="7">7</button>
+                    <button type="button" data-key="8">8</button>
+                    <button type="button" data-key="9">9</button>
+
+                    <button class="key-ghost" type="button" id="hintButton" aria-label="Xem gợi ý">
+                        ?
+                    </button>
+
+                    <button type="button" data-key="0">0</button>
+
+                    <button class="key-ghost" type="button" id="deleteButton" aria-label="Xóa số cuối">
+                        ⌫
+                    </button>
+                </div>
+
+                <p class="hint" id="hint">
+                    Gợi ý: năm hiện tại
+                </p>
+            </div>
+        </section>
+
+        <!-- Màn hình loading -->
+        <section class="screen loading-screen" id="loadingScreen" aria-live="polite">
+            <div class="heart-loader">
+                <span>♥</span>
+            </div>
+
+            <p>Đang mở ra điều đặc biệt...</p>
+
+            <div class="loading-track">
+                <i></i>
+            </div>
+        </section>
+
+        <!-- Màn hình giới thiệu -->
+        <section class="screen intro-screen" id="introScreen">
+            <div class="sparkle-field" aria-hidden="true"></div>
+
+            <p class="eyebrow reveal">
+                TODAY IS NOT AN ORDINARY DAY
+            </p>
+
+            <h2 class="display-title reveal">
+                It's Our
+                <br>
+                <em>Special Day</em>
+            </h2>
+
+            <p class="intro-copy reveal">
+                Một điều nhỏ bé được làm riêng cho
+                một người thật đặc biệt.
+            </p>
+
+            <button class="primary-button reveal" type="button" data-next="birthdayScreen">
+                Vừng ơi mở ra
+                <span>→</span>
+            </button>
+        </section>
+
+        <!-- Màn hình sinh nhật -->
+        <section class="screen birthday-screen" id="birthdayScreen">
+            <div class="birthday-content">
+                <p class="eyebrow">
+                    HAPPY Our Anniversary, MY LOVE
+                </p>
+
+                <h2 class="display-title">
+                    Happy Our
+                    <br>
+                    <em>Anniversary</em>
+                </h2>
+
+                <p class="subtitle">
+                    Thế giới đã rực rỡ hơn kể từ ngày
+                    Vợ iu xuất hiện
+                </p>
+
+                <div class="age-counter glass" aria-label="Tuổi hiện tại">
+                    <div>
+                        <strong id="years">00</strong>
+                        <span>Năm</span>
+                    </div>
+
+                    <div>
+                        <strong id="months">00</strong>
+                        <span>Tháng</span>
+                    </div>
+
+                    <div>
+                        <strong id="days">00</strong>
+                        <span>Ngày</span>
+                    </div>
+                </div>
+
+                <p class="birth-note">
+                    Kể từ ngày
+                    <span id="birthDateLabel">
+                        27.08.2020
+                    </span>
+                </p>
+
+                <button class="primary-button" type="button" data-next="galleryScreen">
+                    Xem những kỷ niệm của Vợ Chồng mình nhá
+                    <span>↓</span>
+                </button>
+            </div>
+
+            <div class="orb" aria-hidden="true">
+                <span>♥</span>
+            </div>
+        </section>
+
+        <!-- Album ảnh -->
+        <section class="screen gallery-screen" id="galleryScreen">
+            <div class="section-heading">
+                <p class="eyebrow">
+                    OUR LITTLE MOMENTS
+                </p>
+
+                <h2>
+                    Những kỷ niệm
+                    <br>
+                    <em>đáng yêu nhất</em>
+                </h2>
+
+                <p>
+                    Vuốt ngang từng ô để xem ảnh
+                    · Chạm vào ảnh để xem lời nhắn
+                </p>
+            </div>
+
+            <div class="photo-grid">
+
+                <!-- Ô ảnh số 1 -->
+                <div class="photo-carousel" data-carousel aria-label="Kỷ niệm 01">
+                    <div class="photo-track">
+                        <button class="photo-card" type="button"
+                            data-caption="Chúng ta sẽ trưởng thành cùng nhau mãi mãi.">
+                            <img src="./img/group11.jpg" alt="AUGUST">
+                            <span>01 · 1</span>
+                        </button>
+
+                        <button class="photo-card" type="button"
+                            data-caption="Khoảnh khắc bình yên nhất là khi có em ở đây.">
+                            <img src="./img/group12.jpg" alt="NAVY">
+                            <span>01 · 2</span>
+                        </button>
+
+                        <button class="photo-card" type="button"
+                            data-caption="Mình sẽ luôn giữ những Khoảnh khắc như thế này nhé.">
+                            <img src="./img/group13.jpg" alt="MYLOVE">
+                            <span>01 · 3</span>
+                        </button>
+                    </div>
+
+                    <button class="carousel-arrow prev" type="button" aria-label="Ảnh trước">
+                        ‹
+                    </button>
+
+                    <button class="carousel-arrow next" type="button" aria-label="Ảnh sau">
+                        ›
+                    </button>
+
+                    <div class="carousel-dots"></div>
+                </div>
+
+                <!-- Ô ảnh số 2 -->
+                <div class="photo-carousel offset" data-carousel aria-label="Kỷ niệm 02">
+                    <div class="photo-track">
+                        <button class="photo-card" type="button"
+                            data-caption="Mọi nơi đều trở nên đặc biệt khi có Vợ bên cạnh.">
+                            <img src="./img/group21.jpg" alt="DIEMTUNG">
+                            <span>02 · 1</span>
+                        </button>
+
+                        <button class="photo-card" type="button" data-caption="Say Vợ rồi">
+                            <img src="./img/group22.jpg" alt="DRUCK">
+                            <span>02 · 2</span>
+                        </button>
+
+                        <button class="photo-card" type="button"
+                            data-caption="Một ngày bình thường cũng thành ngày đáng nhớ.">
+                            <img src="./img/group23.jpg" alt="HAIPHONG">
+                            <span>02 · 3</span>
+                        </button>
+                    </div>
+
+                    <button class="carousel-arrow prev" type="button" aria-label="Ảnh trước">
+                        ‹
+                    </button>
+
+                    <button class="carousel-arrow next" type="button" aria-label="Ảnh sau">
+                        ›
+                    </button>
+
+                    <div class="carousel-dots"></div>
+                </div>
+
+                <!-- Ô ảnh số 3 -->
+                <div class="photo-carousel" data-carousel aria-label="Kỷ niệm 03">
+                    <div class="photo-track">
+                        <button class="photo-card" type="button" data-caption="Lá thư nhỏ bé anh dành cho em.">
+                            <img src="./img/group31.jpg" alt="LETTERT">
+                            <span>03 · 1</span>
+                        </button>
+
+                        <button class="photo-card" type="button" data-caption="Ngày đầu xa cách, Yêu xa!">
+                            <img src="./img/group32.jpg" alt="CATBI">
+                            <span>03 · 2</span>
+                        </button>
+
+                        <button class="photo-card" type="button" data-caption="Thử thách 2 người mỗi người 1 quốc gia">
+                            <img src="./img/group33.jpg" alt="TANSONNHAT">
+                            <span>03 · 3</span>
+                        </button>
+                    </div>
+
+                    <button class="carousel-arrow prev" type="button" aria-label="Ảnh trước">
+                        ‹
+                    </button>
+
+                    <button class="carousel-arrow next" type="button" aria-label="Ảnh sau">
+                        ›
+                    </button>
+
+                    <div class="carousel-dots"></div>
+                </div>
+
+                <!-- Ô ảnh số 4 -->
+                <div class="photo-carousel offset" data-carousel aria-label="Kỷ niệm 04">
+                    <div class="photo-track">
+                        <button class="photo-card" type="button" data-caption="Lá thư nhỏ Em dành cho Anh">
+                            <img src="./img/group41.jpg" alt="LETTERD">
+                            <span>04 · 1</span>
+                        </button>
+
+                        <button class="photo-card" type="button" data-caption="Chiếc ảnh duy nhất hồi cấp 3 cùng nhau">
+                            <img src="./img/group42.jpg" alt="HIGHSCHOOL">
+                            <span>04 · 2</span>
+                        </button>
+
+                        <button class="photo-card" type="button" data-caption="Hẹ hẹ....Không nói gì hết nhá">
+                            <img src="./img/group43.jpg" alt="KISS">
+                            <span>04 · 3</span>
+                        </button>
+                    </div>
+
+                    <button class="carousel-arrow prev" type="button" aria-label="Ảnh trước">
+                        ‹
+                    </button>
+
+                    <button class="carousel-arrow next" type="button" aria-label="Ảnh sau">
+                        ›
+                    </button>
+
+                    <div class="carousel-dots"></div>
+                </div>
+            </div>
+
+            <button class="primary-button" type="button" data-next="letterScreen">
+                Đọc lá thư dành cho em
+                <span>→</span>
+            </button>
+        </section>
+
+        <!-- Lá thư -->
+        <section class="screen letter-screen" id="letterScreen">
+            <div class="letter-wrap">
+                <button class="envelope" id="envelope" type="button" aria-label="Mở lá thư">
+                    <span class="envelope-back"></span>
+                    <span class="letter-preview">For you ♥</span>
+                    <span class="envelope-front"></span>
+                    <span class="envelope-flap"></span>
+                </button>
+
+                <p class="tap-note" id="tapNote">
+                    Chạm để mở lá thư
+                </p>
+
+                <article class="letter glass" id="letter">
+                    <p class="eyebrow">
+                        A LETTER FOR YOU
+                    </p>
+
+                    <h2>
+                        Gửi Vợ yêu
+                        <br>
+                        <em>Người đặc biệt của anh,</em>
+                    </h2>
+
+                    <p>
+                        Vậy là năm nay tròn 6 năm mình yêu nhau rồi Vợ nhỉ.
+                    </p>
+
+                    <p>
+                        Cảm ơn Vợ iu vì đã luôn kiên nhẫn chịu đựng những lúc anh mắc sai lầm,
+                        gây chuyện, cãi vã và đã cùng anh chia sẻ những niềm vui, nỗi buồn
+                        (kể cả những ngày mệt mỏi nhất).
+                    </p>
+
+                    <p>
+                        Mong là chặng đường sau này còn dài,
+                        Vợ Chồng mình vẫn luôn là chỗ dựa vững chắc,
+                        cùng nhau cố gắng và yêu thương nhau nhiều hơn nữa nhé Vợ yêu.
+                    </p>
+
+                    <p class="signature">
+                        Happy Sixth Anniversary To Us ♥
+                        <br>
+                        <strong>
+                            — Yêu Vợ rất nhiều!!! ♥
+                        </strong>
+                    </p>
+
+                    <button class="text-button" id="replayButton" type="button">
+                        Nhấp vào đây nếu muốn xem lại Vợ nhá ↻
+                    </button>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Hộp phóng to ảnh -->
+    <dialog id="photoDialog">
+        <button id="closeDialog" type="button" aria-label="Đóng">
+            ×
+        </button>
+
+        <img id="dialogImage" src="" alt="">
+
+        <p id="dialogCaption"></p>
+    </dialog>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
